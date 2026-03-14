@@ -1,0 +1,22 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: myhtml-pipeline
+  namespace: html-demo
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/rajdevops1/OCP.git
+  strategy:
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: myhtml:latest
+  triggers:
+  - type: GitHub
+    github:
+      secret: mysecret
+  - type: ConfigChange
+  - type: ImageChange
