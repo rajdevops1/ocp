@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myhtml
+  namespace: html-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myhtml
+  template:
+    metadata:
+      labels:
+        app: myhtml
+    spec:
+      serviceAccountName: html-sa   # 👈 binds pod to your SA
+      containers:
+      - name: httpd
+        image: httpd:2.4
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html-files
+          mountPath: /usr/local/apache2/htdocs
+      volumes:
+      - name: html-files
+        configMap:
+          name: myhtml-files
